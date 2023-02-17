@@ -20,7 +20,14 @@ const toFeet = (n) => {
 	var realFeet = ((n*0.393700) / 12);
 	var feet = Math.floor(realFeet);
 	var inches = Math.round(10*((realFeet - feet) * 12)) / 10;
-	return feet > 0 ? feet + "' " + inches + '"' : inches + '"';
+	if (inches < 0.45) {
+		return feet + "' ";
+	} else if (inches >= 11.5) {
+		return (feet + 1) + "' ";
+	}
+	
+	else 
+	return feet > 0 ? feet + "' " + inches.toFixed() + '"' : inches.toFixed() + '"';
  }
  
 
@@ -61,7 +68,12 @@ const toFeet = (n) => {
 		
 		heightOutput.classList.remove('hidden');
 		heightOutput.innerHTML = heightOutput.getAttribute('data-text');
+		if ((heightInput.value).length === 0) {
+			heightOutput.classList.add('hidden');
+		  }
 	})
+
+
 	
 //----------------Конвертер массы----------------
 weightInput.addEventListener('input', () => {
