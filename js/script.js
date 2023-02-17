@@ -1,18 +1,13 @@
 // Поля ввода
-const length_input = document.querySelector('#length');
-const width_input = document.querySelector('#width');
-const height_input = document.querySelector('#height');
-const weight_input = document.querySelector('#weight');
+const lengthInput = document.querySelector('#length');
+const widthInput = document.querySelector('#width');
+const heightInput = document.querySelector('#height');
+const weightInput = document.querySelector('#weight');
 // Текст с результатом рядом с полем
-const length_output = document.querySelector('#converted_length');
-const width_output = document.querySelector('#converted_width');
-const height_output = document.querySelector('#converted_height');
-const weight_output = document.querySelector('#converted_weight');
-/// Переменные для вычислений
-let length_converted;
-let width_converted;
-let height_converted;
-let weight_converted;
+const lengthOutput = document.querySelector('#converted_length');
+const widthOutput = document.querySelector('#converted_width');
+const heightOutput = document.querySelector('#converted_height');
+const weightOutput = document.querySelector('#converted_weight');
 const foot = 30.48;
 const inch = 2.54;
 const kgTLbs = 0.45359;
@@ -21,120 +16,90 @@ const postfix = ' см';
 const postfixInch = '"';
 const postfixKg = ' кг';
 const postfixLbs = ' lbs';
-function toFeet(n) {
+const toFeet = (n) => {
 	var realFeet = ((n*0.393700) / 12);
 	var feet = Math.floor(realFeet);
 	var inches = Math.round(10*((realFeet - feet) * 12)) / 10;
-	return feet + "' " + inches + '"'
+	return feet > 0 ? feet + "' " + inches + '"' : inches + '"';
  }
  
 
 //----------------Конвертер длины----------------
 
-
-	// if ((length_input.value).length === 0) {
-	// 	null;
-	// }
-
-	length_input.addEventListener('input', () => {
+	lengthInput.addEventListener('input', () => {
 		//Значение оканчивается на ' (целые футы)
-		if (length_input.value.endsWith("'")) {
-
-			length_output.setAttribute('data-text', (length_input.value).length == 2 ? (length_input.value[0] * foot).toFixed(1)+ postfix : ((length_input.value).slice(0,2) * foot).toFixed(1)+ postfix) 
-			length_output.classList.remove('hidden')
-			length_output.innerHTML = length_output.getAttribute('data-text')
+		if (lengthInput.value.endsWith("'")) {
+			lengthOutput.setAttribute('data-text', (lengthInput.value).length == 2 ? (lengthInput.value[0] * foot).toFixed(1)+ postfix : ((lengthInput.value).slice(0,2) * foot).toFixed(1)+ postfix) 
 		}
 		//Если футов меньше 10
-		 else if (length_input.value[1] === "'") {
-		length_output.setAttribute('data-text', ((length_input.value).length === 3 ? (length_input.value[0]* foot) + (length_input.value[2] * inch ) : (length_input.value[0]* foot) + ((length_input.value).slice(2,4) * inch)) + postfix);
-		length_output.classList.remove('hidden')
-		length_output.innerHTML = length_output.getAttribute('data-text')
+		 else if (lengthInput.value[1] === "'") {
+		lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? (lengthInput.value[0]* foot) + (lengthInput.value[2] * inch ) : (lengthInput.value[0]* foot) + ((lengthInput.value).slice(2,4) * inch)) + postfix);
 		} 
 		//Если футов больше 10
-		else if (length_input.value[2] === "'") {
-			length_output.setAttribute('data-text', ((length_input.value).length === 3 ? ((length_input.value).slice(0,2)* foot) + (length_input.value[3] * inch ) + postfix : ((length_input.value).slice(0,2)* foot) + ((length_input.value).slice(3,5) * inch)).toFixed(1) + postfix);
-			length_output.classList.remove('hidden')
-			length_output.innerHTML = length_output.getAttribute('data-text')
+		else if (lengthInput.value[2] === "'") {
+			lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? ((lengthInput.value).slice(0,2)* foot) + (lengthInput.value[3] * inch ) + postfix : ((lengthInput.value).slice(0,2)* foot) + ((lengthInput.value).slice(3,5) * inch)).toFixed(1) + postfix);
 			//см в футы
-			}  else if (!isNaN(length_input.value)) {
-				length_output.setAttribute('data-text', toFeet(length_input.value));
-				length_output.classList.remove('hidden')
-				length_output.innerHTML = length_output.getAttribute('data-text')
+			}  else if (!isNaN(lengthInput.value)) {
+				lengthOutput.setAttribute('data-text', toFeet(lengthInput.value));
 			} else null;
+			lengthOutput.classList.remove('hidden')
+			lengthOutput.innerHTML = lengthOutput.getAttribute('data-text')
 
-	  if ((length_input.value).length === 0) {
-		length_output.classList.add('hidden')
+	  if ((lengthInput.value).length === 0) {
+		lengthOutput.classList.add('hidden')
 	  }}
 	)
-//----------------Конвертер высоты----------------
-	height_input.addEventListener('input', () => {
-		if (height_input.value.endsWith('"') || height_input.value.endsWith("'")) {
-
-			height_output.setAttribute('data-text', (height_input.value.slice(0,-1) * inch).toFixed(2) + postfix) 
-			height_output.classList.remove('hidden')
-			height_output.innerHTML = height_output.getAttribute('data-text')
-		} else if (!isNaN(height_input.value)) {
-			height_output.setAttribute('data-text', (height_input.value / inch).toFixed(2) + postfixInch) 
-			height_output.classList.remove('hidden')
-			height_output.innerHTML = height_output.getAttribute('data-text')
-		} else
-		null;
-
-	  if ((height_input.value).length === 0) {
-		height_output.classList.add('hidden')
-	  }
+//----------------Конвертер толщины----------------
+	heightInput.addEventListener('input', () => {
+		if ((heightInput.value).length === 0) {
+			heightOutput.classList.add('hidden'); 
+		} else if (heightInput.value.endsWith('"') && !heightInput.value.endsWith('""')) {
+			heightOutput.setAttribute('data-text', (heightInput.value.slice(0,-1) * inch).toFixed(2) + postfix) 
+		} else if (!isNaN(heightInput.value)) {
+			heightOutput.setAttribute('data-text', toFeet(heightInput.value)) 
+		} else null;
+		
+		heightOutput.classList.remove('hidden');
+		heightOutput.innerHTML = heightOutput.getAttribute('data-text');
 	})
 	
 //----------------Конвертер массы----------------
-weight_input.addEventListener('input', () => {
-	if (weight_input.value.endsWith('"') || weight_input.value.endsWith("'")) {
-		weight_output.setAttribute('data', (weight_input.value.slice(0,-1) * kgTLbs).toFixed(2) + postfixKg)
-		weight_output.classList.remove('hidden');
-		weight_output.innerHTML = weight_output.getAttribute('data')
-
-	} else if (!isNaN(weight_input.value)) {
-		weight_output.setAttribute('data', (weight_input.value * lbsTKg).toFixed(2) + postfixLbs)
-		weight_output.classList.remove('hidden');
-		weight_output.innerHTML = weight_output.getAttribute('data')
+weightInput.addEventListener('input', () => {
+	if (weightInput.value.endsWith('"') || weightInput.value.endsWith("'")) {
+		weightOutput.setAttribute('data', (weightInput.value.slice(0,-1) * kgTLbs).toFixed(2) + postfixKg)
+	} else if (!isNaN(weightInput.value)) {
+		weightOutput.setAttribute('data', (weightInput.value * lbsTKg).toFixed(2) + postfixLbs)
 	} else 
 	null;
-
-	if ((weight_input.value).length === 0) {
-		weight_output.classList.add('hidden')
+	weightOutput.classList.remove('hidden');
+	weightOutput.innerHTML = weightOutput.getAttribute('data')
+	if ((weightInput.value).length === 0) {
+		weightOutput.classList.add('hidden')
 	  }
 })
 //----------------Конвертер ширины----------------
-width_input.addEventListener('input', () => {
-	//Значение является числом
-if (!isNaN(width_input.value)) {
-	width_output.setAttribute('data-text', width_input.value * inch + postfix) 
-	width_output.classList.remove('hidden')
-	width_output.innerHTML = width_output.getAttribute('data-text')
-}
+widthInput.addEventListener('input', () => {
 
-
-	//Значение оканчивается на ' (целые футы)
-	else if (width_input.value.endsWith("'")) {
-
-		width_output.setAttribute('data-text', (width_input.value).length == 2 ? (width_input.value[0] * foot).toFixed(1) + postfix: ((width_input.value).slice(0,2) * foot).toFixed(1)+ postfix) 
-		width_output.classList.remove('hidden')
-		width_output.innerHTML = width_output.getAttribute('data-text')
+	if (widthInput.value.endsWith("'")) {
+		widthOutput.setAttribute('data-text', (widthInput.value).length == 2 ? (widthInput.value[0] * foot).toFixed(1)+ postfix : ((widthInput.value).slice(0,2) * foot).toFixed(1)+ postfix) 
 	}
 	//Если футов меньше 10
-	 else if (width_input.value[1] === "'") {
-	width_output.setAttribute('data-text', ((width_input.value).length === 3 ? (width_input.value[0]* foot) + (width_input.value[2] * inch )  : (width_input.value[0]* foot) + ((width_input.value).slice(2,4) * inch)).toFixed(1) + postfix);
-	width_output.classList.remove('hidden')
-	width_output.innerHTML = width_output.getAttribute('data-text')
+	 else if (widthInput.value[1] === "'") {
+	widthOutput.setAttribute('data-text', ((widthInput.value).length === 3 ? (widthInput.value[0]* foot) + (widthInput.value[2] * inch ) : (widthInput.value[0]* foot) + ((widthInput.value).slice(2,4) * inch)) + postfix);
 	} 
-	//Если футов больше 10
-	else if (width_input.value[2] === "'") {
-		width_output.setAttribute('data-text', ((width_input.value).length === 3 ? ((width_input.value).slice(0,2)* foot) + (width_input.value[3] * inch )  : ((width_input.value).slice(0,2)* foot) + ((width_input.value).slice(3,5) * inch)).toFixed(1) + postfix) ;
-		width_output.classList.remove('hidden')
-		width_output.innerHTML = width_output.getAttribute('data-text')
+	//Если значение в дюймах
+	if (widthInput.value.endsWith('"')) {
+		widthOutput.setAttribute('data-text', widthInput.value.slice(0,-1) * inch + postfix) ;
 		} 
+	//Значение является числом
+	else if (!isNaN(widthInput.value)) {
+		widthOutput.setAttribute('data-text', toFeet(widthInput.value)) 
+	}
+	widthOutput.classList.remove('hidden')
+	widthOutput.innerHTML = widthOutput.getAttribute('data-text')
 
-  if ((width_input.value).length === 0) {
-	width_output.classList.add('hidden')
+  if ((widthInput.value).length === 0) {
+	widthOutput.classList.add('hidden')
   }
 }
 )
