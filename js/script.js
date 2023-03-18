@@ -36,7 +36,7 @@ const toFeet = (n) => {
 	lengthInput.addEventListener('input', () => {
 		//Значение оканчивается на ' (целые футы)
 		if (lengthInput.value.endsWith("'")) {
-			lengthOutput.setAttribute('data-text', (lengthInput.value).length == 2 ? (lengthInput.value[0] * foot).toFixed(1)+ postfix : ((lengthInput.value).slice(0,2) * foot).toFixed(1)+ postfix) 
+			lengthOutput.setAttribute('data-text', (lengthInput.value).length == 2 ? (lengthInput.value[0] * foot).toFixed()+ postfix : ((lengthInput.value).slice(0,2) * foot).toFixed()+ postfix) 
 		}
 		//Если футов меньше 10
 		 else if (lengthInput.value[1] === "'") {
@@ -44,7 +44,7 @@ const toFeet = (n) => {
 		} 
 		//Если футов больше 10
 		else if (lengthInput.value[2] === "'") {
-			lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? ((lengthInput.value).slice(0,2)* foot) + (lengthInput.value[3] * inch ) + postfix : ((lengthInput.value).slice(0,2)* foot) + ((lengthInput.value).slice(3,5) * inch)).toFixed(1) + postfix);
+			lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? ((lengthInput.value).slice(0,2)* foot) + (lengthInput.value[3] * inch ) + postfix : ((lengthInput.value).slice(0,2)* foot) + ((lengthInput.value).slice(3,5) * inch)).toFixed() + postfix);
 			//см в футы
 			}  else if (!isNaN(lengthInput.value)) {
 				lengthOutput.setAttribute('data-text', toFeet(lengthInput.value));
@@ -58,14 +58,11 @@ const toFeet = (n) => {
 	)
 //----------------Конвертер толщины----------------
 	heightInput.addEventListener('input', () => {
-		if ((heightInput.value).length === 0) {
-			heightOutput.classList.add('hidden'); 
-		} else if (heightInput.value.endsWith('"') && !heightInput.value.endsWith('""')) {
-			heightOutput.setAttribute('data-text', (heightInput.value.slice(0,-1) * inch).toFixed(2) + postfix) 
+		 if (heightInput.value.endsWith('"')) {
+			heightOutput.setAttribute('data-text', (heightInput.value.slice(0,-1) * inch).toFixed() + postfix) 
 		} else if (!isNaN(heightInput.value)) {
-			heightOutput.setAttribute('data-text', toFeet(heightInput.value)) 
+			heightOutput.setAttribute('data-text', (heightInput.value / inch).toFixed() + postfixInch) 
 		} else null;
-		
 		heightOutput.classList.remove('hidden');
 		heightOutput.innerHTML = heightOutput.getAttribute('data-text');
 		if ((heightInput.value).length === 0) {
@@ -78,9 +75,9 @@ const toFeet = (n) => {
 //----------------Конвертер массы----------------
 weightInput.addEventListener('input', () => {
 	if (weightInput.value.endsWith('"') || weightInput.value.endsWith("'")) {
-		weightOutput.setAttribute('data', (weightInput.value.slice(0,-1) * kgTLbs).toFixed(2) + postfixKg)
+		weightOutput.setAttribute('data', (weightInput.value.slice(0,-1) * kgTLbs).toFixed(1) + postfixKg)
 	} else if (!isNaN(weightInput.value)) {
-		weightOutput.setAttribute('data', (weightInput.value * lbsTKg).toFixed(2) + postfixLbs)
+		weightOutput.setAttribute('data', (weightInput.value * lbsTKg).toFixed(1) + postfixLbs)
 	} else 
 	null;
 	weightOutput.classList.remove('hidden');
@@ -92,21 +89,15 @@ weightInput.addEventListener('input', () => {
 //----------------Конвертер ширины----------------
 widthInput.addEventListener('input', () => {
 
-	if (widthInput.value.endsWith("'")) {
-		widthOutput.setAttribute('data-text', (widthInput.value).length == 2 ? (widthInput.value[0] * foot).toFixed(1)+ postfix : ((widthInput.value).slice(0,2) * foot).toFixed(1)+ postfix) 
-	}
-	//Если футов меньше 10
-	 else if (widthInput.value[1] === "'") {
-	widthOutput.setAttribute('data-text', ((widthInput.value).length === 3 ? (widthInput.value[0]* foot) + (widthInput.value[2] * inch ) : (widthInput.value[0]* foot) + ((widthInput.value).slice(2,4) * inch)) + postfix);
-	} 
 	//Если значение в дюймах
 	if (widthInput.value.endsWith('"')) {
-		widthOutput.setAttribute('data-text', widthInput.value.slice(0,-1) * inch + postfix) ;
+		widthOutput.setAttribute('data-text', (widthInput.value.slice(0,-1) * inch).toFixed() + postfix) ;
 		} 
-	//Значение является числом
+	//Значение в см
 	else if (!isNaN(widthInput.value)) {
-		widthOutput.setAttribute('data-text', toFeet(widthInput.value)) 
-	}
+		widthOutput.setAttribute('data-text', (widthInput.value / inch).toFixed() + postfixInch) 
+	} else null;
+
 	widthOutput.classList.remove('hidden')
 	widthOutput.innerHTML = widthOutput.getAttribute('data-text')
 
@@ -115,3 +106,30 @@ widthInput.addEventListener('input', () => {
   }
 }
 )
+
+
+// Get the modal
+var help = document.querySelector(".help");
+
+// Get the button that opens the modal
+var btn = document.querySelector(".menu__help");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  help.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  help.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == help) {
+    help.style.display = "none";
+  }
+}
