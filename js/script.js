@@ -40,7 +40,7 @@ const toFeet = (n) => {
 		}
 		//Если футов меньше 10
 		 else if (lengthInput.value[1] === "'") {
-		lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? (lengthInput.value[0]* foot) + (lengthInput.value[2] * inch ) : (lengthInput.value[0]* foot) + ((lengthInput.value).slice(2,4) * inch)) + postfix);
+		lengthOutput.setAttribute('data-text', ((lengthInput.value).length === 3 ? (lengthInput.value[0]* foot) + (lengthInput.value[2] * inch ) : (lengthInput.value[0]* foot) + ((lengthInput.value).slice(2,4) * inch)).toFixed()  + postfix);
 		} 
 		//Если футов больше 10
 		else if (lengthInput.value[2] === "'") {
